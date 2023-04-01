@@ -1,7 +1,6 @@
 package com.stickers.theoffice.Controllers;
 
 import com.stickers.theoffice.DTOs.StickersCreateDTO;
-import com.stickers.theoffice.DTOs.StickersDTO;
 import com.stickers.theoffice.DTOs.StickersFindDTO;
 import com.stickers.theoffice.Services.StickersService;
 import jakarta.validation.Valid;
@@ -25,7 +24,7 @@ public class StickersController {
     @Autowired
     private StickersService service;
 
-    @GetMapping
+    @GetMapping()
     public ResponseEntity<Page<StickersFindDTO>> findAll(Pageable pageable){
         Page<StickersFindDTO> stickers = service.findAllPaged(pageable);
         return ResponseEntity.ok().body(stickers);
