@@ -1,6 +1,8 @@
 package com.stickers.theoffice.Services;
 
+import com.stickers.theoffice.DTOs.StickersCreateDTO;
 import com.stickers.theoffice.DTOs.StickersDTO;
+import com.stickers.theoffice.DTOs.StickersFindDTO;
 import com.stickers.theoffice.Models.Sticker;
 import com.stickers.theoffice.Repository.StickersRepository;
 import com.stickers.theoffice.Utils.exceptions.BrokenURLException;
@@ -9,11 +11,11 @@ import com.stickers.theoffice.Utils.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -21,7 +23,6 @@ import java.net.URLConnection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 @Service
 public class StickersService {
@@ -45,17 +46,23 @@ public class StickersService {
         return urlStream;
     }
 
+    @Transactional(readOnly = true)
+    public Page<StickersFindDTO> findAllPaged(Pageable pageable){
+        Page<Sticker> stickers = repository.findAll(pageable);
+        return stickers.map(s -> new StickersFindDTO(s));
+    }
+
     @Transactional
-    public StickersDTO insert(StickersDTO categoryDTO) {
+    public StickersCreateDTO insert(StickersDTO categoryDTO) {
         Sticker sticker = new Sticker();
         sticker.setCharacter(categoryDTO.getCharacter());
         sticker.setUrl(categoryDTO.getUrl());
         sticker = repository.save(sticker);
-        return new StickersDTO(sticker);
+        return new StickersCreateDTO(sticker);
     }
 
     @Transactional
-    public StickersDTO update(String id, StickersDTO stickersDTO) {
+    public StickersCreateDTO update(String id, StickersDTO stickersDTO) {
         try{
             Optional<Sticker> sticker = repository.findById(id);
             if (stickersDTO.getCharacter() != null && !stickersDTO.getCharacter().isEmpty()){
@@ -65,7 +72,7 @@ public class StickersService {
                 sticker.orElseThrow(() -> new ResourceNotFoundException("Id not found")).setUrl(stickersDTO.getUrl());
             }
             Sticker updatedSticker = repository.save(sticker.orElseThrow(() -> new ResourceNotFoundException("Id not found")));
-            return new StickersDTO(updatedSticker);
+            return new StickersCreateDTO(updatedSticker);
         } catch (Exception err){
             throw new ResourceNotFoundException("Id not found" + id);
         }

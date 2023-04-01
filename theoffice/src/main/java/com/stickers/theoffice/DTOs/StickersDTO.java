@@ -16,9 +16,9 @@ public class StickersDTO {
         this.url = url;
     }
 
-    public StickersDTO(Sticker stricker){
-        this.character = stricker.getCharacter();
-        this.url = stricker.getUrl();
+    public StickersDTO(Sticker sticker){
+        this.character = sticker.getCharacter();
+        this.url = sticker.getUrl();
     }
 
     public String getCharacter() {
