@@ -22,8 +22,7 @@
 <img src="https://github.com/anacarolcortez/spring-stickerbuilder/blob/main/theoffice/prints/delete_sticker.png">
 
 <h2>Deploy no Render</h2>
-<p>Você pode pegar uma figurinha randômica ou a lista de figuringas pela aplicação na nuvem, publicada no Render:</p>
 
-<a href="https://theoffice-stickers.onrender.com/stickers/random">Figirinha radômica (png)</a>
+<a href="https://theofficestickers.onrender.com/stickers/random">Figurinha randômica (png)</a>
 
-<a href="https://theoffice-stickers.onrender.com/stickers/random">Lista de figurinhas (json)</a>
+<a href="https://theofficestickers.onrender.com/stickers">Lista de figurinhas (json)</a>
